@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>কম্পিউটার ও তথ্য প্রযুক্তি</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a202c, #2d3748);
+            min-height: 100vh;
+            font-family: 'Noto Serif Bengali', serif;
+            color: #e2e8f0;
+        }
+        .quiz-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+        .question {
+            margin-bottom: 1.5rem;
+        }
+        .option {
+            display: block;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .option:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .option input {
+            margin-right: 0.5rem;
+        }
+        .result-container {
+            display: none;
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 0.5rem;
+        }
+        .correct {
+            background: #10b981 !important;
+            color: white;
+        }
+        .incorrect {
+            background: #ef4444 !important;
+            color: white;
+        }
+        h1, h2 {
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1 class="text-3xl font-bold text-center mb-6">Test No: 6</h1>
+        <h2 class="text-xl text-center mb-4">বিষয়: নিত্য প্রয়োজনীয় কম্পিউটিং প্রযুক্তি,ক্লায়েন্ট-সার্ভার ম্যানেজমেন্ট,মোবাইল প্রযুক্তির বৈশিষ্ট্যসমূহ </h2>
+        <div id="quiz">
+            </div>
+        <button onclick="submitQuiz()" class="mt-4 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">কুইজ জমা দিন</button>
+        <div id="result" class="result-container">
+            <h2 class="text-2xl font-bold">আপনার স্কোর: <span id="score"></span>/100</h2>
+            <div id="correct-answers"></div>
+        </div>
+    </div>
+
+    <script>
+ const questions = [
+    { question: "ই-মেইলের পূর্ণরূপ কী?", options: ["Emergency Mail", "Electronic Mail", "Essential Mail", "External Mail"], correct: 1 },
+    { question: "ই-মেইল পাঠানোর জন্য কোন প্রোটোকল ব্যবহৃত হয়?", options: ["HTTP", "FTP", "SMTP", "POP3"], correct: 2 },
+    { question: "ই-মেইল গ্রহণ করার জন্য ব্যবহৃত একটি প্রোটোকল কোনটি?", options: ["SMTP", "POP3", "FTP", "HTTP"], correct: 1 },
+    { question: "ই-মেইলে 'CC' এর পূর্ণরূপ কী?", options: ["Carbon Copy", "Client Copy", "Courtesy Copy", "Computer Copy"], correct: 0 },
+    { question: "ই-মেইলে 'BCC' এর পূর্ণরূপ কী?", options: ["Best Carbon Copy", "Blind Carbon Copy", "Better Client Copy", "Binary Carbon Copy"], correct: 1 },
+    { question: "একটি ই-মেইল ঠিকানায় `@` প্রতীকের পরের অংশটিকে কী বলা হয়?", options: ["ব্যবহারকারীর নাম (Username)", "ডোমেইন নাম (Domain Name)", "সাবজেক্ট (Subject)", "প্রোটোকল (Protocol)"], correct: 1 },
+    { question: "ফ্যাক্স (Fax) এর পূর্ণরূপ কী?", options: ["File And Xeroxing", "Facsimile", "Fast Axis", "File Exchange"], correct: 1 },
+    { question: "ফ্যাক্স মেশিন কী কাজে ব্যবহৃত হয়?", options: ["অডিও ফাইল পাঠানো", "ডকুমেন্ট স্ক্যান ও পাঠানো", "ভিডিও স্ট্রিমিং", "অনলাইন শপিং"], correct: 1 },
+    { question: "ফ্যাক্স বার্তা স্থানান্তরের জন্য কোন মাধ্যম ব্যবহার করা হয়?", options: ["স্যাটেলাইট", "ইন্টারনেট", "টেলিফোন লাইন", "ওয়াইফাই"], correct: 2 },
+    { question: "QR কোড এর পূর্ণরূপ কী?", options: ["Quick Response Code", "Quality Recognition Code", "Quick Reader Code", "Quarter Range Code"], correct: 0 },
+    { question: "QR কোড কোন ধরনের বারকোড?", options: ["১-ডাইমেনশনাল", "২-ডাইমেনশনাল", "৩-ডাইমেনশনাল", "৪-ডাইমেনশনাল"], correct: 1 },
+    { question: "ভিডিও কনফারেন্সিং এর জন্য কোন অ্যাপ্লিকেশনটি জনপ্রিয়?", options: ["Microsoft Word", "Google Docs", "Zoom", "Adobe Photoshop"], correct: 2 },
+    { question: "VOIP এর পূর্ণরূপ কী?", options: ["Voice Over Internet Protocol", "Video On Internet Phone", "Voice Over Internal Protocol", "Video On Information Protocol"], correct: 0 },
+    { question: "GPS এর পূর্ণরূপ কী?", options: ["Global Positioning System", "General Positioning System", "Global Private System", "Geographic Positioning System"], correct: 0 },
+    { question: "ডিজিটাল স্বাক্ষর (Digital Signature) কীসের জন্য ব্যবহৃত হয়?", options: ["ডেটা এনক্রিপশন", "ডেটা অথেন্টিকেশন ও অখণ্ডতা", "ডেটা কম্প্রেস করা", "ডেটাবেজ তৈরি করা"], correct: 1 },
+    { question: "ক্লায়েন্ট-সার্ভার মডেল কী?", options: ["দুটি কম্পিউটারের মধ্যে সরাসরি সংযোগ", "একটি কম্পিউটার যা কেবল ডেটা সংরক্ষণ করে", "একটি কম্পিউটার যা সেবা দেয় এবং একটি কম্পিউটার যা সেবা গ্রহণ করে", "একটি অপারেটিং সিস্টেম"], correct: 2 },
+    { question: "ক্লায়েন্ট-সার্ভার আর্কিটেকচারের প্রধান সুবিধা কী?", options: ["কম দাম", "একক ডিভাইস ব্যবহার", "কেন্দ্রীয় ডেটা ব্যবস্থাপনা", "ডেটা ডুপ্লিকেশন"], correct: 2 },
+    { question: "একটি ওয়েব ব্রাউজার ক্লায়েন্ট-সার্ভার মডেলের কোন অংশ?", options: ["সার্ভার", "ক্লায়েন্ট", "উভয়ই", "কোনোটিই নয়"], correct: 1 },
+    { question: "একটি ওয়েব সার্ভারের প্রধান কাজ কী?", options: ["ওয়েব পেজ তৈরি করা", "ওয়েব পেজ সংরক্ষণ ও ক্লায়েন্টকে সরবরাহ করা", "ইন্টারনেট সংযোগ দেওয়া", "মোবাইল অ্যাপ তৈরি করা"], correct: 1 },
+    { question: "FTP ক্লায়েন্ট কোন কাজ করে?", options: ["ওয়েব ব্রাউজিং", "ফাইল স্থানান্তর", "ই-মেইল পাঠানো", "ভিডিও দেখা"], correct: 1 },
+    { question: "ক্লায়েন্টকে ডেটা সরবরাহ করার জন্য সার্ভার কী ব্যবহার করে?", options: ["কিবোর্ড", "হার্ড ড্রাইভ", "ডেটাবেজ", "প্রিন্টার"], correct: 2 },
+    { question: "একটি ই-মেইল সার্ভারের কাজ কী?", options: ["ওয়েবপেজ সংরক্ষণ", "ই-মেইল সংরক্ষণ, গ্রহণ ও পাঠানো", "ফাইল শেয়ার করা", "ভিডিও কল করা"], correct: 1 },
+    { question: "ক্লায়েন্ট-সার্ভার পরিবেশে 'রিকোয়েস্ট' (Request) কী?", options: ["ক্লায়েন্ট থেকে সার্ভারে পাঠানো ডেটা", "সার্ভার থেকে ক্লায়েন্টে পাঠানো ডেটা", "সার্ভারের একটি ত্রুটি", "ক্লায়েন্টের একটি হার্ডওয়্যার"], correct: 0 },
+    { question: "ক্লায়েন্ট-সার্ভার পরিবেশে 'রেসপন্স' (Response) কী?", options: ["ক্লায়েন্ট থেকে সার্ভারে পাঠানো ডেটা", "সার্ভার থেকে ক্লায়েন্টে পাঠানো ডেটা", "ক্লায়েন্টের একটি ত্রুটি", "সার্ভারের একটি হার্ডওয়্যার"], correct: 1 },
+    { question: "একটি ডেটাবেজ সার্ভার কী করে?", options: ["ডেটাবেজ তৈরি ও পরিচালনা করে", "ইন্টারনেট সংযোগ দেয়", "প্রিন্টার নিয়ন্ত্রণ করে", "সফটওয়্যার ইন্সটল করে"], correct: 0 },
+    { question: "স্মার্টফোন কী?", options: ["একটি সাধারণ মোবাইল ফোন", "একটি ক্যামেরা", "একটি কম্পিউটার ও মোবাইল ফোনের সমন্বয়", "একটি গেমিং ডিভাইস"], correct: 2 },
+    { question: "স্মার্টফোনের প্রধান অপারেটিং সিস্টেম কোনটি?", options: ["Windows", "Linux", "Android", "DOS"], correct: 2 },
+    { question: "আইফোন কোন অপারেটিং সিস্টেম ব্যবহার করে?", options: ["Android", "iOS", "Windows Phone", "Symbian"], correct: 1 },
+    { question: "স্মার্টফোনের 'র‌্যাম' (RAM) কীসের জন্য ব্যবহৃত হয়?", options: ["দীর্ঘমেয়াদী ডেটা সংরক্ষণ", "সাময়িকভাবে ডেটা সংরক্ষণ ও প্রোগ্রাম চালানো", "ক্যামেরা ডেটা সংরক্ষণ", "ফোন চার্জ করা"], correct: 1 },
+    { question: "স্মার্টফোনের স্টোরেজ পরিমাপের একক কোনটি?", options: ["মেগাবাইট (MB) ও গিগাবাইট (GB)", "ভোল্ট (V)", "অ্যাম্পিয়ার (A)", "ওয়াট (W)"], correct: 0 },
+    { question: "মোবাইল ডেটা ব্যবহার করে ইন্টারনেট অ্যাক্সেস করা সম্ভব?", options: ["হ্যাঁ", "না", "কিছু ক্ষেত্রে", "কেবল ওয়াইফাই-তে সম্ভব"], correct: 0 },
+    { question: "NFC (Near Field Communication) প্রযুক্তি কোন কাজে ব্যবহৃত হয়?", options: ["লং-রেঞ্জ ডেটা ট্রান্সফার", "শর্ট-রেঞ্জ ওয়্যারলেস কমিউনিকেশন", "ভিডিও কল", "ওয়্যারলেস চার্জিং"], correct: 1 },
+    { question: "স্মার্টফোনের বায়োমেট্রিক সিকিউরিটি কী?", options: ["পাসওয়ার্ড", "ফিঙ্গারপ্রিন্ট বা ফেস রিকগনিশন", "প্যাটার্ন লক", "পিন লক"], correct: 1 },
+    { question: "একটি স্মার্টফোনের মৌলিক উপাদান নয় কোনটি?", options: ["প্রসেসর", "র‌্যাম", "কিবোর্ড", "ব্যাটারি"], correct: 2 },
+    { question: "মোবাইল ফোনের প্রথম প্রজন্ম (1G) কীসের জন্য পরিচিত ছিল?", options: ["ডিজিটাল ভয়েস কল", "অ্যানালগ ভয়েস কল", "এসএমএস", "ইন্টারনেট"], correct: 1 },
+    { question: "স্মার্টফোনে 'ব্লুটুথ' কী কাজে ব্যবহৃত হয়?", options: ["ইন্টারনেট অ্যাক্সেস", "ছোট দূরত্বের ডেটা ট্রান্সফার", "ফোন চার্জ করা", "মোবাইল নেটওয়ার্ক সংযোগ"], correct: 1 },
+    { question: "স্মার্টফোনের অপারেটিং সিস্টেম আপডেটের প্রধান উদ্দেশ্য কী?", options: ["ফোনের দাম বাড়ানো", "নতুন ফিচার যোগ করা ও নিরাপত্তা উন্নত করা", "ব্যাটারির ক্ষমতা কমানো", "ফোনটিকে ধীর করা"], correct: 1 },
+    { question: "স্মার্টফোনে ব্যবহৃত একটি অ্যাপ্লিকেশন (App) কী?", options: ["একটি হার্ডওয়্যার ডিভাইস", "একটি সফটওয়্যার যা নির্দিষ্ট কাজ করে", "একটি মোবাইল গেম", "একটি ফাইল"], correct: 1 },
+    { question: "স্মার্টফোনের একটি 'সেন্সর' (Sensor) কী?", options: ["একটি সফটওয়্যার", "একটি হার্ডওয়্যার যা বাহ্যিক তথ্য শনাক্ত করে (যেমন: আলো, গতি)", "একটি অ্যাপ্লিকেশন", "একটি ফাইল"], correct: 1 },
+    { question: "মোবাইল ব্যাংকিং অ্যাপ কোন ধরনের প্রযুক্তি ব্যবহার করে?", options: ["ইন্টারনেট", "ওয়াইফাই", "সেলুলার নেটওয়ার্ক", "উপরের সবকটি"], correct: 3 },
+    { question: "একটি স্মার্টফোনের 'জিপিএস' কোন কাজে ব্যবহৃত হয়?", options: ["ফোন কল করা", "অবস্থান শনাক্ত করা", "ছবি তোলা", "গান শোনা"], correct: 1 },
+    { question: "স্মার্টফোন ব্যবহার করে ডেটাবেজ অ্যাক্সেস করা সম্ভব?", options: ["হ্যাঁ", "না", "কিছু ক্ষেত্রে", "কেবল ওয়াইফাই-তে সম্ভব"], correct: 0 },
+    { question: "মোবাইল ডিভাইসে ব্যবহৃত 'মোবাইল ডেটা' কীসের মাধ্যমে সরবরাহ করা হয়?", options: ["ওয়াইফাই", "সেলুলার নেটওয়ার্ক", "ব্লুটুথ", "এনএফসি"], correct: 1 },
+    { question: "স্মার্টফোন ব্যবহার করে কোন কাজটি করা সম্ভব নয়?", options: ["গান শোনা", "ফোন তৈরি করা", "ই-মেইল চেক করা", "ভিডিও দেখা"], correct: 1 },
+    { question: "মোবাইল প্রযুক্তির একটি সুবিধা কোনটি?", options: ["কমপ্যাক্ট আকার", "পোর্টেবিলিটি", "উচ্চ গতি", "উপরের সবকটি"], correct: 3 },
+    { question: "'টাচস্ক্রিন' প্রযুক্তি স্মার্টফোনে কী কাজে ব্যবহৃত হয়?", options: ["ডেটা সংরক্ষণ", "ব্যবহারকারীর ইনপুট গ্রহণ", "ব্যাটারি চার্জ করা", "ছবি তোলা"], correct: 1 },
+    { question: "মোবাইল ডিভাইসে ব্যবহৃত 'রুম' (ROM) কী?", options: ["ডেটাবেজ", "প্রোগ্রামিং ভাষা", "অস্থায়ী মেমরি", "স্থায়ী মেমরি"], correct: 3 },
+    { question: "স্মার্টফোন কোন ধরনের সংযোগ ব্যবহার করে ইন্টারনেট অ্যাক্সেস করতে পারে?", options: ["ওয়াইফাই", "মোবাইল ডেটা", "ব্লুটুথ", "a এবং b উভয়ই"], correct: 3 },
+    { question: "'ফ্ল্যাশলাইট' (Flashlight) সেন্সর কোন ধরনের কাজ করে?", options: ["আলো শনাক্ত করা", "শব্দ রেকর্ড করা", "ক্যামেরা নিয়ন্ত্রণ করা", "ডেটা সংরক্ষণ করা"], correct: 0 },
+    { question: "মোবাইল প্রযুক্তি ব্যবহার করে অনলাইনে কেনাকাটার প্রক্রিয়াকে কী বলা হয়?", options: ["ই-গভর্নেন্স", "ই-কমার্স", "ই-লার্নিং", "ই-হেলথ"], correct: 1 }
+];
+
+        function loadQuiz() {
+            const quizDiv = document.getElementById('quiz');
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.innerHTML = `
+                    <h3 class="text-lg font-semibold mb-2">${index + 1}. ${q.question}</h3>
+                    ${q.options.map((option, i) => `
+                        <label class="option">
+                            <input type="radio" name="q${index}" value="${i}">
+                            ${option}
+                        </label>
+                    `).join('')}
+                `;
+                quizDiv.appendChild(questionDiv);
+            });
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            const resultDiv = document.getElementById('result');
+            const correctAnswersDiv = document.getElementById('correct-answers');
+            correctAnswersDiv.innerHTML = '';
+
+            questions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const questionDiv = document.getElementsByClassName('question')[index];
+                const options = questionDiv.getElementsByClassName('option');
+
+                if (selected && parseInt(selected.value) === q.correct) {
+                    score++;
+                    options[q.correct].classList.add('correct');
+                } else {
+                    if (selected) {
+                        options[parseInt(selected.value)].classList.add('incorrect');
+                    }
+                    options[q.correct].classList.add('correct');
+                }
+
+                const answerDiv = document.createElement('div');
+                answerDiv.innerHTML = `<p><strong>${index + 1}. ${q.question}</strong><br>সঠিক উত্তর: ${q.options[q.correct]}</p>`;
+                correctAnswersDiv.appendChild(answerDiv);
+            });
+
+            document.getElementById('score').textContent = score;
+            resultDiv.style.display = 'block';
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        loadQuiz();
+    </script>
+</body>
+</html>
